@@ -7,9 +7,6 @@ import InputField from 'custom-fields/InputField';
 import SelectField from 'custom-fields/SelectField';
 import RandomPhotoField from 'custom-fields/RandomPhotoField';
 import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { addPhoto } from 'features/Photo/photoSlice'
-import { useHistory } from 'react-router-dom';
 
 PhotoForm.propTypes = {
   onSubmit: PropTypes.func,
@@ -26,9 +23,6 @@ function PhotoForm(props) {
     photo: ''
   }
 
-  const dispatch = useDispatch()
-  const history = useHistory()
-
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('This field is required!'),
     categoryId: Yup.number().required('This field is required!').nullable(),
@@ -39,17 +33,11 @@ function PhotoForm(props) {
     })
   })
 
-  const handleSubmit = (values) => {
-
-    dispatch(addPhoto(values));
-    history.push('/photos');
-  }
-
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={values => handleSubmit(values)}
+      onSubmit={props.onSubmit}
     >
       {
         formikProps => {
